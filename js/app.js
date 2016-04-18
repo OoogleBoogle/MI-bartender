@@ -17,10 +17,9 @@
 // }
 
 
-// var Bartender = {
-//     // selection of ingerr
-//     .call(Staff, this.BartenderQuestions.bind(this))
-// }
+var Bartender() = {
+    
+}
 
 
 
@@ -35,24 +34,6 @@
 // harry.askQuestion()
 // joe.askQuestion()
 
-
-
-// var Bartender {
-//     allQuestions: [{
-//         question: "Salty"
-//     },
-//     {
-//         question: "Strong"
-//     }]
-// }
-// var z = 0;
-// var ingredientSelection: drinkMenu[z].ingredients[z]
-// var typeSelection: drinkMenu[z].type[z]
-
-/*
-for (i = 0, i < drinkMenu.length)
-*/
-
 function buildIngredientHTML(drink) {
     var HTML = "";
     for (var i = 0; i < drink.ingredients.length; i++) {
@@ -61,18 +42,8 @@ function buildIngredientHTML(drink) {
     return HTML;
 }
 
-/*
 
-fruity = ['pineapple', 'strawberry', 'apple']
-sour = ['salt', ]
-input
-when input == Rum
-    name: "Piraty"
-when input == kerosene
-    name: "burner"
-if user input value = strong ....
-else remove Grogulator from available selections
-*/
+// BUILD CUSTOM DRINK
 
 function buildCustomDrink(option) {
     var text;
@@ -84,11 +55,16 @@ function buildCustomDrink(option) {
             text = "Hot Fuel";
             break;
         case "Axle Grease":
-            // return part of a name + ingredient choice
             text = "Slippery"
             break;
         case "Nitrous Oxide":
             text = "Booster";
+            break;
+        case "Pepperoni":
+            text = "Spicealot";
+            break;
+        case "Red Dye #2":
+            text = "Blood";
             break;
         default:
             // do something
@@ -97,7 +73,7 @@ function buildCustomDrink(option) {
     return text;
 }
 
-var fixedDrinkMenu = [{
+var customDrink = [{
     name: "Grogulator",
     ingredients: ["Rum", "Kerosene", "Axle Grease", "Tonic"],
     type: "Strong"
@@ -119,21 +95,28 @@ var fixedDrinkMenu = [{
 }];
 
 
-
-/*
-var chosenDrink = function (object) {
-    this.ingredients = object.ingredients;
-    this.nameOfDrink = object.name;
-    this.tag = tags;
-}
-
-var servedDrink = new chosenDrink({
+// BUILDS FIXED DRINK MENU
+var fixedDrinkMenu = [{
+    name: "Grogulator",
+    ingredients: ["Rum", "Kerosene", "Axle Grease", "Tonic"],
+    type: "Strong"
+},
+{
+    name: "Diet Grog",
+    ingredients: ["Rum", "Diet Coke", "Cactus Extract", "Acetone"],
+    type: "Salty"
+},
+{
+    name: "Grog Turbo",
+    ingredients: ["Rum", "Nitrous Oxide", "Pepperoni", "Ghost Pepper"],
+    type: "Spicy"
+},
+{
     name: "Grog",
-    ingerg: "Nitrous"
-})
+    ingredients: ["Rum", "Red Dye #2", "Aftershave", "Artificial Sweeteners"],
+    type: "Fruity"
+}];
 
-
-*/
 
 $(function() {
     $(".pirateMenuIntro").on("click", "button", function() {
@@ -161,11 +144,11 @@ $(function() {
         event.preventDefault();
         var option1 = $('input[name="col-1"]:checked').val();
         var option2 = $('input[name="col-2"]:checked').val();
-    
+        var option3 = $('input[name="col-3"]:checked').val();
         var text = buildCustomDrink(option1);
         text += " " + buildCustomDrink(option2);
+        text += " " + buildCustomDrink(option3);
         $('.drinkDescription').text(text);
     })
- 
 })
 
