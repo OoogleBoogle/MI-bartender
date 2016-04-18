@@ -8,23 +8,31 @@
 
 // Objects needed
 
-function StaffMember(questions) {
+var StaffMember = function(questions) {
     this.currentQuestionIndex = 0;
     this.questions = questions;
 }
 
-var bartender = new StaffMember([
-    "Rrrr ye looking fir somethin' strong?",
-    "Rrrr ye looking fir somethin' salty?",
-    "Rrrr ye looking fir somethin' spicy?",
-    "Rrrr ye looking fir somethin' fruity?",
-])
+StaffMember.prototype.askQuestion = function() {
+    return this.questions[this.currentQuestionIndex];
+}
 
+StaffMember.prototype.completeOrder = function(orderedItem) {
+    var response = "Arrrh! Then you'll be wanting the " + orderedItem.name + "! ";
+    response += this.buildIngredientText(orderedItem);
+    return response;
+}
 
-function buildIngredientHTML(drink) {
+StaffMember.prototype.buildIngredientText = function(item) {
     var HTML = "";
-    for (var i = 0; i < drink.ingredients.length; i++) {
-        HTML += drink.ingredients[i] + " ";
+    for (var i = 0; i < item.ingredients.length; i++) {
+        if (i === 0) {
+            HTML += "Made o' the finest ";
+        } else if (i === item.ingredients.length - 1) {
+            HTML += "...an a splash of " + item.ingredients[i] + " o'course!";
+            break;
+        }
+        HTML += item.ingredients[i] + ", ";
     }
     return HTML;
 }
@@ -60,6 +68,14 @@ function buildCustomDrink(option) {
     return text;
 }
 
+var bartender = new StaffMember(
+[
+    // consider maybe these questions are random and seemingly unrelated
+    "Rrrr ye looking fir somethin' strong?", // eg. could be "What's you're fave movie: Rocky or The Notebook" Rocky === Strong
+    "Rrrr ye looking fir somethin' salty?",  
+    "Rrrr ye looking fir somethin' spicy?",
+    "Rrrr ye looking fir somethin' fruity?"
+]);
 
 
 // ref points (Must be string)
@@ -80,33 +96,22 @@ var fixedDrinkMenu = [{
 },
 {
     name: "Diet Grog",
-    ingredients: ["Rum", "Diet Coke", "Cactus Extract", "Acetone"],
+    ingredients: ["Rum", "Acetone", "Cactus Extract", "Diet Coke&trade;"],
     type: '0111'
 },
 {
     name: "Grog Turbo",
-    ingredients: ["Rum", "Nitrous Oxide", "Pepperoni", "Ghost Pepper"],
-    type: "Spicy"
+    ingredients: ["Rum", "Ghost Peppers", "Pepperoni", "Nitrous Oxide"],
+    type: "1000"
 },
 {
     name: "Grog",
-    ingredients: ["Rum", "Red Dye #2", "Aftershave", "Artificial Sweeteners"],
-    type: "Fruity"
+    ingredients: ["Rum", "Red Dye #2", "Aftershave", "Hydrogenated starch hydrolysate"],
+    type: "0011"
 }];
 
 
 $(function() {
-    var b-questions = [
-        "Do you like it salty?",
-        "blah blah blah"
-    ];
-    
-    
-    var joe = new Bartender(b-questions);
-    
-    
-    
-    
     $(".pirateMenuIntro").on("click", "button", function() {
         if ($(this).text() === "Grog") {
             $("#drinkSection").slideDown();  
@@ -127,8 +132,6 @@ $(function() {
             }
         }
     })
- 
- /* */
  
     $('#customDrinkOrder').on('submit', function(event) {
         event.preventDefault();
