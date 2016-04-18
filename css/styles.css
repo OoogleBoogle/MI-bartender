@@ -1,0 +1,9 @@
+li {
+    list-style-type: none;
+}
+
+#drinkSection,
+#foodSection {
+    display: none;
+}
+
