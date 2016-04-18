@@ -8,31 +8,18 @@
 
 // Objects needed
 
-// var StaffMember(questions) = {
-//     this.questions = questions;
-// }
-
-// StaffMember.prototype.askQuestion() {
-    
-// }
-
-
-var Bartender() = {
-    
+function StaffMember(questions) {
+    this.currentQuestionIndex = 0;
+    this.questions = questions;
 }
 
+var bartender = new StaffMember([
+    "Rrrr ye looking fir somethin' strong?",
+    "Rrrr ye looking fir somethin' salty?",
+    "Rrrr ye looking fir somethin' spicy?",
+    "Rrrr ye looking fir somethin' fruity?",
+])
 
-
-// var Chef = {
-
-// }
-
-// joe = new bartender
-// harry = new Chef
-
-
-// harry.askQuestion()
-// joe.askQuestion()
 
 function buildIngredientHTML(drink) {
     var HTML = "";
@@ -73,38 +60,28 @@ function buildCustomDrink(option) {
     return text;
 }
 
-var customDrink = [{
-    name: "Grogulator",
-    ingredients: ["Rum", "Kerosene", "Axle Grease", "Tonic"],
-    type: "Strong"
-},
-{
-    name: "Diet Grog",
-    ingredients: ["Rum", "Diet Coke", "Cactus Extract", "Acetone"],
-    type: "Salty"
-},
-{
-    name: "Grog Turbo",
-    ingredients: ["Rum", "Nitrous Oxide", "Pepperoni", "Ghost Pepper"],
-    type: "Spicy"
-},
-{
-    name: "Grog",
-    ingredients: ["Rum", "Red Dye #2", "Aftershave", "Artificial Sweeteners"],
-    type: "Fruity"
-}];
+
+
+// ref points (Must be string)
+// strong === "1000"
+// salty === "0100"
+// fruity  === "0010"
+// spicy === "0001"
+
+// therefore strong and fruity would be "1010"
+// strong + spicy === "0101"
 
 
 // BUILDS FIXED DRINK MENU
 var fixedDrinkMenu = [{
     name: "Grogulator",
     ingredients: ["Rum", "Kerosene", "Axle Grease", "Tonic"],
-    type: "Strong"
+    type: '1111'
 },
 {
     name: "Diet Grog",
     ingredients: ["Rum", "Diet Coke", "Cactus Extract", "Acetone"],
-    type: "Salty"
+    type: '0111'
 },
 {
     name: "Grog Turbo",
@@ -119,6 +96,17 @@ var fixedDrinkMenu = [{
 
 
 $(function() {
+    var b-questions = [
+        "Do you like it salty?",
+        "blah blah blah"
+    ];
+    
+    
+    var joe = new Bartender(b-questions);
+    
+    
+    
+    
     $(".pirateMenuIntro").on("click", "button", function() {
         if ($(this).text() === "Grog") {
             $("#drinkSection").slideDown();  
@@ -139,7 +127,9 @@ $(function() {
             }
         }
     })
-    
+ 
+ /* */
+ 
     $('#customDrinkOrder').on('submit', function(event) {
         event.preventDefault();
         var option1 = $('input[name="col-1"]:checked').val();
