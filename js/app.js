@@ -53,7 +53,7 @@ StaffMember.prototype.buildIngredientText = function(item) {
 var fixedDrinkMenu = [{
     name: "Grogulator",
     ingredients: ["Rum", "Kerosene", "Axle Grease", "Tonic"],
-    type: '1111'
+    type: '1101'
 },
 {
     name: "Diet Grog",
@@ -63,20 +63,38 @@ var fixedDrinkMenu = [{
 {
     name: "Grog Turbo",
     ingredients: ["Rum", "Ghost Peppers", "Pepperoni", "Nitrous Oxide"],
-    type: "1000"
+    type: "1111"
 },
 {
-    name: "Grog",
-    ingredients: ["Rum", "Red Dye #2", "Aftershave", "Hydrogenated starch hydrolysate"],
+    name: "Cherry Grog",
+    ingredients: ["Rum", "Red Dye #2", "Bath Scumm", "Reconstituted Cherry Extract"],
     type: "0011"
+},
+{
+    name: "Caffeine Free Grog",
+    ingredients: ["Rum", "Palm Oil", "Acetone", "Pamplemoose"],
+    type: "0101"
+},{
+    name: "Near Grog",
+    ingredients: ["Rum", "Red Dye #2", "Sulfuric Acid", "Hydrogenated starch hydrolysate"],
+    type: "1001"
+},{
+    name: "Grog Lite",
+    ingredients: ["Rum", "Bread", "Old Battery Acid", "My Dandruff"],
+    type: "0011"
+},{
+    name: "Eau De Toilette",
+    ingredients: ["Spit", "Dog Hair", "Lint", "Toilet Water"],
+    type: "0000"
 }];
 
 var findDrink = function(code) {
     for (var i = 0; i < fixedDrinkMenu.length; i++) {
         if (fixedDrinkMenu[i].type === code) {
             return fixedDrinkMenu[i];
-        }
+        } 
     }
+    return fixedDrinkMenu[fixedDrinkMenu.length - 1];
 }
 
 var bartender = new StaffMember({
