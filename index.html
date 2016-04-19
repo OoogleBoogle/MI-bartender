@@ -15,29 +15,35 @@
     </section>
     
     <section id="drinkSection">
-        <h2>List of Drink Questions</h2>
-        <ul id="setDrinkOptions">
-            <li data-type="Salty">Salty</li>
-            <li data-type="Strong">Strong</li>
-            <li data-type="Spicy">Spicy</li>
-        </ul>
-        <form id="customDrinkOrder">
-            <input type="radio" value="Rum" name="col-1">Rum</input>
-            <input type="radio" value="Axle Grease" name="col-1">Axle Grease</input>
-            <input type="radio" value="Kerosene" name="col-2">Kerosene</input>
-            <input type="radio" value="Nitrous Oxide" name="col-2">Nitrous Oxide</input>
-            <input type="radio" value="Pepperoni" name="col-3">Pepperoni</input>
-            <input type="radio" value="Red Dye #2" name="col-3">Red Dye #2</input>
-            <input type="submit" value="Submit"/>
-        </form>
-        <h1 class="drinkDescription"></h1>
+        <h1 class="introduction"></h1>
+        <div class="questionGroup">
+            <h2 class="question drinkQuestion">Test</h2>
+            <input type="button" value="yes"/>
+            <input type="button" value="no"/>
+        </div>
+        <div class="questionGroup">
+            <h2 class="question drinkQuestion">Test 2</h2>
+            <input type="button" value="yes"/>
+            <input type="button" value="no"/>
+        </div>
+        <div class="questionGroup">
+            <h2 class="question drinkQuestion">Test 3</h2>
+            <input type="button" value="yes"/>
+            <input type="button" value="no"/>
+        </div>
+        <div class="questionGroup">
+            <h2 class="question drinkQuestion">Test 4</h2>
+            <input type="button" value="yes"/>
+            <input type="button" value="no"/>
+        </div>
     </section>
     
-    <section id="foodSection">
-        <ul>
-            <li>List of Food question</li>
-        </ul>
+    <section id="foodSelection">
+        <h1 class="introduction"></h1>
     </section>
+    
+    <section id="yourOrder"></section>
+
     <script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
     <script src="js/app.js"></script>
 </body>

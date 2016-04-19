@@ -8,9 +8,11 @@
 
 // Objects needed
 
-var StaffMember = function(questions) {
+var StaffMember = function(obj) {
+    this.intro = obj.intro;
+    this.questions = obj.questionsArray;
     this.currentQuestionIndex = 0;
-    this.questions = questions;
+    
 }
 
 StaffMember.prototype.askQuestion = function() {
@@ -38,46 +40,6 @@ StaffMember.prototype.buildIngredientText = function(item) {
 }
 
 
-// BUILD CUSTOM DRINK
-
-function buildCustomDrink(option) {
-    var text;
-    switch (option) {
-        case "Rum":
-            text = "Piraty";
-            break;
-        case "Kerosene":
-            text = "Hot Fuel";
-            break;
-        case "Axle Grease":
-            text = "Slippery"
-            break;
-        case "Nitrous Oxide":
-            text = "Booster";
-            break;
-        case "Pepperoni":
-            text = "Spicealot";
-            break;
-        case "Red Dye #2":
-            text = "Blood";
-            break;
-        default:
-            // do something
-            
-    }
-    return text;
-}
-
-var bartender = new StaffMember(
-[
-    // consider maybe these questions are random and seemingly unrelated
-    "Rrrr ye looking fir somethin' strong?", // eg. could be "What's you're fave movie: Rocky or The Notebook" Rocky === Strong
-    "Rrrr ye looking fir somethin' salty?",  
-    "Rrrr ye looking fir somethin' spicy?",
-    "Rrrr ye looking fir somethin' fruity?"
-]);
-
-
 // ref points (Must be string)
 // strong === "1000"
 // salty === "0100"
@@ -86,7 +48,6 @@ var bartender = new StaffMember(
 
 // therefore strong and fruity would be "1010"
 // strong + spicy === "0101"
-
 
 // BUILDS FIXED DRINK MENU
 var fixedDrinkMenu = [{
@@ -110,38 +71,60 @@ var fixedDrinkMenu = [{
     type: "0011"
 }];
 
+var findDrink = function(code) {
+    for (var i = 0; i < fixedDrinkMenu.length; i++) {
+        if (fixedDrinkMenu[i].type === code) {
+            return fixedDrinkMenu[i];
+        }
+    }
+}
+
+var bartender = new StaffMember({
+    intro: "So it be a drink you're after?",
+    questionsArray: [// consider maybe these questions are random and seemingly unrelated
+    "Rrrr ye looking fir somethin' strong?", // eg. could be "What's you're fave movie: Rocky or The Notebook" Rocky === Strong
+    "Rrrr ye looking fir somethin' salty?",  
+    "Rrrr ye looking fir somethin' spicy?",
+    "Rrrr ye looking fir somethin' fruity?"
+    ],
+});
+
 
 $(function() {
     $(".pirateMenuIntro").on("click", "button", function() {
         if ($(this).text() === "Grog") {
-            $("#drinkSection").slideDown();  
             $("#foodSection").slideUp();
+            $("#drinkSection").slideDown('fast', function() {
+                var i = 0;
+                $('.drinkQuestion').each(function() {
+                    $(this).text(bartender.questions[i]);
+                    i++;
+                });
+                $(this).children().next().first().slideDown();
+            });  
+            
         } else if ($(this).text() === "Slog") {
             $("#foodSection").slideDown();  
             $("#drinkSection").slideUp();
         }
-    })
-
-
-    $('#setDrinkOptions').on('click', 'li', function(){
-        var attr = $(this).data('type');
-        console.log(attr);
-        for (var i = 0; i < fixedDrinkMenu.length; i++) {
-            if (fixedDrinkMenu[i].type === attr) {
-                $('.drinkDescription').text(fixedDrinkMenu[i].name);
-            }
+    });
+    // choice button manager
+    var itemCode = "";
+    $('.questionGroup').on('click', 'input', function() {
+        var value = this.value;
+        if (value === 'yes') {
+            itemCode += "1";
+        } else {
+            itemCode += "0";
         }
-    })
- 
-    $('#customDrinkOrder').on('submit', function(event) {
-        event.preventDefault();
-        var option1 = $('input[name="col-1"]:checked').val();
-        var option2 = $('input[name="col-2"]:checked').val();
-        var option3 = $('input[name="col-3"]:checked').val();
-        var text = buildCustomDrink(option1);
-        text += " " + buildCustomDrink(option2);
-        text += " " + buildCustomDrink(option3);
-        $('.drinkDescription').text(text);
-    })
-})
+        if ($(this).parent().next().hasClass('questionGroup')) {
+            $(this).parent().slideUp().next().slideDown();
+        } else {
+            $(this).parent().slideUp();
+            var selection = findDrink(itemCode);
+            var text = bartender.completeOrder(selection);
+            $('#yourOrder').append($('<h1>').text(text)).slideDown();
+        }
+    });
+});
 

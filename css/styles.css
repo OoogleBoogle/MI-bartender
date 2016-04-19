@@ -3,7 +3,9 @@ li {
 }
 
 #drinkSection,
-#foodSection {
+#foodSection,
+.questionGroup,
+#yourOrder {
     display: none;
 }
 
