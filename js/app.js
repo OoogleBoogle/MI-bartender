@@ -6,7 +6,7 @@
         //Ingredients for burgers and drinks are built off objects
         
 
-// Objects needed
+// Generic StaffMember Object for expansion
 
 var StaffMember = function(obj) {
     this.intro = obj.intro;
@@ -48,39 +48,46 @@ var drinks =  {
     // therefore strong and fruity would be "1010"
     // strong + spicy === "0101"
     fixedDrinkMenu: [{
-        name: "Grogulator",
-        ingredients: ["Rum", "Kerosene", "Axle Grease", "Tonic"],
-        type: '1101'
-    },
-    {
-        name: "Diet Grog",
-        ingredients: ["Rum", "Acetone", "Cactus Extract", "Diet Coke&trade;"],
-        type: '0111'
-    },
-    {
         name: "Grog Turbo",
         ingredients: ["Rum", "Ghost Peppers", "Pepperoni", "Nitrous Oxide"],
         type: "1111"
     },
     {
-        name: "Cherry Grog",
-        ingredients: ["Rum", "Red Dye #2", "Bath Scumm", "Reconstituted Cherry Extract"],
-        type: "0011"
+        name: "Kracken",
+        ingredients: ["Ground Octopus Beak", "Pizza", "Sea Water", "Squid Ink"],
+        type: "0111"
     },
     {
-        name: "Caffeine Free Grog",
-        ingredients: ["Rum", "Palm Oil", "Acetone", "Pamplemoose"],
-        type: "0101"
+        name: "Cherry Grog",
+        ingredients: ["Rum", "Red Dye #2", "Bath Scumm", "Reconstituted Cherry Extract"],
+        type: "1011"
+    },
+    {
+        name: "Grogulator",
+        ingredients: ["Rum", "Kerosene", "Axle Grease", "Tonic"],
+        type: '1101'
     },
     {
         name: "Near Grog",
         ingredients: ["Rum", "Red Dye #2", "Sulfuric Acid", "Hydrogenated starch hydrolysate"],
-        type: "1001"
+        type: "1110"
+        
     },
     {
         name: "Grog Lite",
         ingredients: ["Rum", "Bread", "Old Battery Acid", "My Dandruff"],
         type: "0011"
+    },
+    {
+        
+        name: "Caffeine Free Grog",
+        ingredients: ["Rum", "Palm Oil", "Acetone", "Paaaamplemoose"],
+        type: "0101"
+    },
+    {
+        name: "Diet Grog",
+        ingredients: ["Rum", "Acetone", "Cactus Extract", "Diet Coke&trade;"],
+        type: '0110'
     },
     {
         name: "Eau De Toilette",
@@ -105,50 +112,56 @@ var drinks =  {
 // create bartender StaffMember with his into (hello) statement and questions.
 var bartender = new StaffMember({
     intro: "So it be a drink you're after?",
-    questionsArray: [// consider maybe these questions are random and seemingly unrelated
+    questionsArray: [
     "Which be your favourite movie?",
-    "Ave ye any good books lately?",  
+    "Ave ye read any good books lately?",  
     "Halloween or Chrismas?",
     "What be the best way to clean a mirror?"
     ],
 });
 
+var reset = function() {
+    drinks.drinkCode = "";
+    $('#yourOrder').html("");
+}
+
 
 $(function() {
     $(".pirateMenuIntro").on("click", "button", function() {
-        drinks.drinkCode = "";
-        $('#yourOrder').html("");
+        $('.pirateMenuIntro h1').slideUp(); // slide up for space saving in the window
+        reset();
         if ($(this).text() === "Grog") {
             $("#foodSection").slideUp();
             $("#drinkSection").slideDown('fast', function() {
+                $('.introduction').text(bartender.intro);
                 var i = 0;
-                $('.drinkQuestion').each(function() {
+                $('.drinkQuestion').each(function() { //loop through bartender q's and put in place in html
                     $(this).text(bartender.questions[i]);
                     i++;
                 });
-                $(this).children().next().first().slideDown();
-            });  
-            
-        } else if ($(this).text() === "Slog") {
+                $(this).children().next().first().slideDown(); // slide down first Q
+            });
+        } else if ($(this).text() === "Slog") { // not yet implemented
+            $("#drinkSection, .questionGroup").slideUp();
             $("#foodSection").slideDown();  
-            $("#drinkSection").slideUp();
+            
         }
     });
     // choice button manager
     $('.questionGroup').on('click', 'input', function() {
-        var value = $(this).data('piratescore');
+        var value = $(this).data('piratescore'); // cache pirate score data attribute in a 'value' var
         if (value === 1) {
             drinks.drinkCode += "1";
         } else {
             drinks.drinkCode += "0";
         }
-        if ($(this).parent().next().hasClass('questionGroup')) {
+        if ($(this).parent().next().hasClass('questionGroup')) {     // provided there's another Q
             $(this).parent().slideUp().next().slideDown();
         } else {
-            $(this).parent().slideUp();
-            var selection = drinks.findDrink(drinks.drinkCode);
-            var text = bartender.completeOrder(selection);
-            $('#yourOrder').append($('<h1>').text(text)).slideDown();
+            $(this).parent().slideUp();                                // otherwise...
+            var selection = drinks.findDrink(drinks.drinkCode);        // find the drink in the drinks list
+            var text = bartender.completeOrder(selection);             // send drink to complete order proto
+            $('#yourOrder').append($('<h1>').text(text)).slideDown();  // append the text to the order view section and slide down
         }
     });
 });

@@ -1,11 +1,91 @@
-li {
-    list-style-type: none;
+@font-face {
+    font-family: 'uglyquaitalic';
+    src: url('../fonts/UglyQua-Italic-webfont.eot');
+    src: url('../fonts/UglyQua-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/UglyQua-Italic-webfont.woff') format('woff'),
+         url('../fonts/UglyQua-Italic-webfont.ttf') format('truetype'),
+         url('../fonts/UglyQua-Italic-webfont.svg#uglyquaitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
+
+body {
+    background-color: black;
+}
+
+input:focus,
+button:focus {
+    outline: none;
+}
+
+
+.pirateMenuIntro,
+#drinkSection,
+#yourOrder {
+    font-family: 'uglyquaitalic', serif;
+    font-variant: small-caps;
+    color: white;
+    font-size: 1.9em;
+    font-weight: 100;
+}
+
+.pirateMenuIntro {
+    text-align: center;
+}
+
+.pirateMenuIntro > button {
+    font-family: Papyrus, fantasy;
+    font-variant: small-caps;
+    padding: 0.5em 1.3em;
+    font-size: 0.7em;
+    border: none;
+    border-radius: 69% 24% / 43% 55%;
+    border-bottom: 2px solid #6E733A;
+    background-color: #6F3232;
+    color: #fff;
+}
+
+
 
 #drinkSection,
 #foodSection,
 .questionGroup,
 #yourOrder {
     display: none;
+    
 }
 
+#drinkSection {
+    /*display: block;*/
+    text-align: center;
+    padding-top: 2em;
+}
+
+#drinkSection > * {
+    /*display: block;*/
+}
+
+#drinkSection input {
+    font-family: Papyrus, fantasy;
+    font-variant: small-caps;
+    padding: 1.5em 1.3em;
+    font-size: 0.8em;
+    border: none;
+    border-radius: 69% 24% / 43% 55%;
+    border-bottom: 2px solid #6E733A;
+    background-color: #6F3232;
+    color: #fff;
+    transition: background-color .5s;
+}
+
+#drinkSection input:hover {
+    background-color: #442525;
+}
+
+.introduction {
+    margin: 0;
+}
+
+.questionGroup h2 {
+    font-size: 2em;
+}
