@@ -12,7 +12,6 @@ var StaffMember = function(obj) {
     this.intro = obj.intro;
     this.questions = obj.questionsArray;
     this.currentQuestionIndex = 0;
-    
 }
 
 StaffMember.prototype.askQuestion = function() {
@@ -31,7 +30,7 @@ StaffMember.prototype.buildIngredientText = function(item) {
         if (i === 0) {
             HTML += "Made o' the finest ";
         } else if (i === item.ingredients.length - 1) {
-            HTML += "...an a splash of " + item.ingredients[i] + " o'course!";
+            HTML += "...an a splash of " + item.ingredients[i] + "!";
             break;
         }
         HTML += item.ingredients[i] + ", ";
@@ -39,77 +38,86 @@ StaffMember.prototype.buildIngredientText = function(item) {
     return HTML;
 }
 
-
-// ref points (Must be string)
-// strong === "1000"
-// salty === "0100"
-// fruity  === "0010"
-// spicy === "0001"
-
-// therefore strong and fruity would be "1010"
-// strong + spicy === "0101"
-
-// BUILDS FIXED DRINK MENU
-var fixedDrinkMenu = [{
-    name: "Grogulator",
-    ingredients: ["Rum", "Kerosene", "Axle Grease", "Tonic"],
-    type: '1101'
-},
-{
-    name: "Diet Grog",
-    ingredients: ["Rum", "Acetone", "Cactus Extract", "Diet Coke&trade;"],
-    type: '0111'
-},
-{
-    name: "Grog Turbo",
-    ingredients: ["Rum", "Ghost Peppers", "Pepperoni", "Nitrous Oxide"],
-    type: "1111"
-},
-{
-    name: "Cherry Grog",
-    ingredients: ["Rum", "Red Dye #2", "Bath Scumm", "Reconstituted Cherry Extract"],
-    type: "0011"
-},
-{
-    name: "Caffeine Free Grog",
-    ingredients: ["Rum", "Palm Oil", "Acetone", "Pamplemoose"],
-    type: "0101"
-},{
-    name: "Near Grog",
-    ingredients: ["Rum", "Red Dye #2", "Sulfuric Acid", "Hydrogenated starch hydrolysate"],
-    type: "1001"
-},{
-    name: "Grog Lite",
-    ingredients: ["Rum", "Bread", "Old Battery Acid", "My Dandruff"],
-    type: "0011"
-},{
-    name: "Eau De Toilette",
-    ingredients: ["Spit", "Dog Hair", "Lint", "Toilet Water"],
-    type: "0000"
-}];
-
-var findDrink = function(code) {
-    for (var i = 0; i < fixedDrinkMenu.length; i++) {
-        if (fixedDrinkMenu[i].type === code) {
-            return fixedDrinkMenu[i];
-        } 
+var drinks =  {
+    // drink menu code ref points (Must be string)
+    // strong === "1000"
+    // salty === "0100"
+    // fruity  === "0010"
+    // spicy === "0001"
+    
+    // therefore strong and fruity would be "1010"
+    // strong + spicy === "0101"
+    fixedDrinkMenu: [{
+        name: "Grogulator",
+        ingredients: ["Rum", "Kerosene", "Axle Grease", "Tonic"],
+        type: '1101'
+    },
+    {
+        name: "Diet Grog",
+        ingredients: ["Rum", "Acetone", "Cactus Extract", "Diet Coke&trade;"],
+        type: '0111'
+    },
+    {
+        name: "Grog Turbo",
+        ingredients: ["Rum", "Ghost Peppers", "Pepperoni", "Nitrous Oxide"],
+        type: "1111"
+    },
+    {
+        name: "Cherry Grog",
+        ingredients: ["Rum", "Red Dye #2", "Bath Scumm", "Reconstituted Cherry Extract"],
+        type: "0011"
+    },
+    {
+        name: "Caffeine Free Grog",
+        ingredients: ["Rum", "Palm Oil", "Acetone", "Pamplemoose"],
+        type: "0101"
+    },
+    {
+        name: "Near Grog",
+        ingredients: ["Rum", "Red Dye #2", "Sulfuric Acid", "Hydrogenated starch hydrolysate"],
+        type: "1001"
+    },
+    {
+        name: "Grog Lite",
+        ingredients: ["Rum", "Bread", "Old Battery Acid", "My Dandruff"],
+        type: "0011"
+    },
+    {
+        name: "Eau De Toilette",
+        ingredients: ["Spit", "Dog Hair", "Lint", "Toilet Water"],
+        type: "0000"
+    }],
+    drinkCode: "", // drink code is built from user options (see choice button manager at the end of the file)
+    findDrink: function(code) {
+        // loop through to find a drink 'type' that matches
+        for (var i = 0; i < this.fixedDrinkMenu.length; i++) {
+            if (this.fixedDrinkMenu[i].type === code) {
+                return this.fixedDrinkMenu[i];
+            } 
+        }
+        // if there's no match send back the rubbish option at the end of the drink menu array
+        return this.fixedDrinkMenu[this.fixedDrinkMenu.length - 1];
     }
-    return fixedDrinkMenu[fixedDrinkMenu.length - 1];
 }
 
+
+
+// create bartender StaffMember with his into (hello) statement and questions.
 var bartender = new StaffMember({
     intro: "So it be a drink you're after?",
     questionsArray: [// consider maybe these questions are random and seemingly unrelated
-    "Rrrr ye looking fir somethin' strong?", // eg. could be "What's you're fave movie: Rocky or The Notebook" Rocky === Strong
-    "Rrrr ye looking fir somethin' salty?",  
-    "Rrrr ye looking fir somethin' spicy?",
-    "Rrrr ye looking fir somethin' fruity?"
+    "Which be your favourite movie?",
+    "Ave ye any good books lately?",  
+    "Halloween or Chrismas?",
+    "What be the best way to clean a mirror?"
     ],
 });
 
 
 $(function() {
     $(".pirateMenuIntro").on("click", "button", function() {
+        drinks.drinkCode = "";
+        $('#yourOrder').html("");
         if ($(this).text() === "Grog") {
             $("#foodSection").slideUp();
             $("#drinkSection").slideDown('fast', function() {
@@ -127,19 +135,18 @@ $(function() {
         }
     });
     // choice button manager
-    var itemCode = "";
     $('.questionGroup').on('click', 'input', function() {
-        var value = this.value;
-        if (value === 'yes') {
-            itemCode += "1";
+        var value = $(this).data('piratescore');
+        if (value === 1) {
+            drinks.drinkCode += "1";
         } else {
-            itemCode += "0";
+            drinks.drinkCode += "0";
         }
         if ($(this).parent().next().hasClass('questionGroup')) {
             $(this).parent().slideUp().next().slideDown();
         } else {
             $(this).parent().slideUp();
-            var selection = findDrink(itemCode);
+            var selection = drinks.findDrink(drinks.drinkCode);
             var text = bartender.completeOrder(selection);
             $('#yourOrder').append($('<h1>').text(text)).slideDown();
         }
